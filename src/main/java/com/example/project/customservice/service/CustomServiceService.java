@@ -5,18 +5,6 @@ import com.example.project.customservice.api.CustomServiceRequest;
 import com.example.project.customservice.domain.CustomService;
 import com.example.project.customservice.repository.CustomServiceRepository;
 import com.example.project.user.domain.User;
-import com.example.project.user.repository.UserRepository;
-import com.example.project.user.service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-
-import com.example.project.customservice.api.CustomServiceRequest;
-import com.example.project.customservice.domain.CustomService;
-import com.example.project.customservice.repository.CustomServiceRepository;
-import com.example.project.user.domain.User;
 import com.example.project.user.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
