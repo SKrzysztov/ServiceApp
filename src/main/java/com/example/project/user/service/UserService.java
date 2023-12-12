@@ -17,7 +17,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
+
     private PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
@@ -42,11 +42,9 @@ public class UserService {
             User userEntity = optionalUser.get();
             userEntity.setUsername(userRequest.getUsername());
             userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-            // aktualizacja innych pól...
 
             return userRepository.save(userEntity);
         } else {
-            // Obsługa błędu - użytkownik nie istnieje
             throw new RuntimeException("Użytkownik o podanym ID nie istnieje");
         }
     }
