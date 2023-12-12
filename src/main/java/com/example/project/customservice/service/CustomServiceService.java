@@ -36,11 +36,16 @@ public class CustomServiceService {
         return serviceRepository.save(serviceEntity);
     }
 
-    public CustomService updateService(Long serviceId, CustomServiceRequest serviceRequest) {
+    public CustomService updateService(Long serviceId, Long userId, CustomServiceRequest serviceRequest) {
         Optional<CustomService> optionalService = serviceRepository.findById(serviceId);
 
         if (optionalService.isPresent()) {
             CustomService serviceEntity = optionalService.get();
+
+            if (!serviceEntity.getUser().getId().equals(userId)) {
+                throw new RuntimeException("Nie jesteś właścicielem tej usługi");
+            }
+
             serviceEntity.setServiceName(serviceRequest.getServiceName());
             return serviceRepository.save(serviceEntity);
         } else {
@@ -48,7 +53,19 @@ public class CustomServiceService {
         }
     }
 
-    public void deleteService(Long serviceId) {
-        serviceRepository.deleteById(serviceId);
+    public void deleteService(Long serviceId, Long userId) {
+        Optional<CustomService> optionalService = serviceRepository.findById(serviceId);
+
+        if (optionalService.isPresent()) {
+            CustomService serviceEntity = optionalService.get();
+
+            if (!serviceEntity.getUser().getId().equals(userId)) {
+                throw new RuntimeException("Nie jesteś właścicielem tej usługi");
+            }
+
+            serviceRepository.deleteById(serviceId);
+        } else {
+            throw new RuntimeException("Serwis o podanym ID nie istnieje");
+        }
     }
 }

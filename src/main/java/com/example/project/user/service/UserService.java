@@ -16,36 +16,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
-    public Optional<User> getUserById(Long userId) {
-        return userRepository.findById(userId);
-    }
-
-    public User createUser(UserRequest userRequest) {
-        User userEntity = new User();
-        userEntity.setUsername(userRequest.getUsername());
-        userEntity.setPassword(userRequest.getPassword());
-        return userRepository.save(userEntity);
-    }
-
-    public User updateUser(Long userId, UserRequest userRequest) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-
-        if (optionalUser.isPresent()) {
-            User userEntity = optionalUser.get();
-            userEntity.setUsername(userRequest.getUsername());
-            userEntity.setPassword(userRequest.getPassword());
-
-            return userRepository.save(userEntity);
-        } else {
-            throw new RuntimeException("Użytkownik o podanym ID nie istnieje");
-        }
-    }
-    public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
+    public User createUser(String username, String password) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password); // Tutaj powinieneś użyć odpowiedniego mechanizmu skrótu hasła
+        return userRepository.save(user);
     }
 }

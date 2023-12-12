@@ -4,6 +4,7 @@ import com.example.project.customservice.api.CustomServiceRequest;
 import com.example.project.customservice.domain.CustomService;
 import com.example.project.customservice.service.CustomServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,13 +32,26 @@ public class CustomServiceController {
         return customServiceService.createService(userId, serviceRequest);
     }
 
-    @PutMapping("/{serviceId}")
-    public CustomService updateService(@PathVariable Long serviceId, @RequestBody CustomServiceRequest serviceRequest) {
-        return customServiceService.updateService(serviceId, serviceRequest);
+    @PutMapping("/{serviceId}/update/{userId}")
+    public ResponseEntity<CustomService> updateService(
+            @PathVariable Long serviceId,
+            @PathVariable Long userId,
+            @RequestBody CustomServiceRequest serviceRequest) {
+        try {
+            CustomService updatedService = customServiceService.updateService(serviceId, userId, serviceRequest);
+            return ResponseEntity.ok(updatedService);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
-    @DeleteMapping("/{serviceId}")
-    public void deleteService(@PathVariable Long serviceId) {
-        customServiceService.deleteService(serviceId);
+    @DeleteMapping("/{serviceId}/delete/{userId}")
+    public ResponseEntity<Void> deleteService(@PathVariable Long serviceId, @PathVariable Long userId) {
+        try {
+            customServiceService.deleteService(serviceId, userId);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
