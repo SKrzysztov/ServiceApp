@@ -7,7 +7,6 @@ import com.example.project.reservation.domain.Reservation;
 import com.example.project.reservation.repository.ReservationRepository;
 import com.example.project.tools.ReservationTimeCalculator;
 import com.example.project.user.domain.User;
-import com.example.project.user.repository.UserRepository;
 import com.example.project.user.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ public class ReservationService {
 
     @Autowired
     private ReservationRepository reservationRepository;
-
 
 
     @Autowired

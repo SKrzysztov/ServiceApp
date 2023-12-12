@@ -1,13 +1,10 @@
 package com.example.project.user.domain;
 
-import com.example.project.customservice.domain.CustomService;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
-@Table(name= "users")
+@Table(name = "users")
 @Builder
 @Getter
 @Setter
