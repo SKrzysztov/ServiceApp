@@ -2,6 +2,7 @@ package com.example.project.reservation.domain;
 
 import com.example.project.customservice.domain.CustomService;
 import com.example.project.user.domain.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,13 +22,16 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime reservationDateTime;
+    @JsonFormat(pattern = "yy-MM-dd HH:mm")
+    private LocalDateTime startDateTime;
 
+    @JsonFormat(pattern = "yy-MM-dd HH:mm")
+    private LocalDateTime endDateTime;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "service_id")
+    @JoinColumn(name = "services")
     private CustomService service;
 }

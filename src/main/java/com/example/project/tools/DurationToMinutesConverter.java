@@ -1,14 +1,20 @@
 package com.example.project.tools;
 
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+
 import java.time.Duration;
 
-public class DurationToMinutesConverter {
+@Converter(autoApply = true)
+public class DurationToMinutesConverter implements AttributeConverter<Duration, Long> {
 
-    public static long convertToMinutes(Duration duration) {
-        return duration.toMinutes();
+    @Override
+    public Long convertToDatabaseColumn(Duration attribute) {
+        return attribute == null ? null : attribute.toMinutes();
     }
 
-    public static Duration convertToDuration(long minutes) {
-        return Duration.ofMinutes(minutes);
+    @Override
+    public Duration convertToEntityAttribute(Long dbData) {
+        return dbData == null ? null : Duration.ofMinutes(dbData);
     }
 }
