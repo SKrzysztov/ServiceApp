@@ -1,4 +1,7 @@
 package com.example.project.customservice.repository;
 
-public interface CustomServiceRepository {
+import com.example.project.customservice.domain.CustomService;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CustomServiceRepository extends JpaRepository<CustomService,Long> {
 }
