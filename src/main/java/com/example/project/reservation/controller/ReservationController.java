@@ -4,6 +4,8 @@ import com.example.project.reservation.api.ReservationRequest;
 import com.example.project.reservation.domain.Reservation;
 import com.example.project.reservation.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,40 +28,43 @@ public class ReservationController {
         return reservationService.getAllReservationsByServiceId(serviceId);
     }
 
-    @PostMapping("/create/{userId}/{serviceId}")
-    public ResponseEntity<Reservation> createReservation(
-            @PathVariable Long userId,
+    @PostMapping("/{serviceId}")
+    public ResponseEntity<String> createReservation(
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authHeader,
             @PathVariable Long serviceId,
             @RequestBody ReservationRequest reservationRequest) {
         try {
-            Reservation newReservation = reservationService.createReservation(userId, serviceId, reservationRequest);
-            return ResponseEntity.ok(newReservation);
+            Reservation newReservation = reservationService.createReservation(authHeader, serviceId, reservationRequest);
+            return ResponseEntity.ok("Reservation created with ID: " + newReservation.getId());
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @PutMapping("/{reservationId}/update/{userId}")
-    public ResponseEntity<Reservation> updateReservation(
+    @PutMapping("/{reservationId}")
+    public ResponseEntity<String> updateReservation(
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authHeader,
             @PathVariable Long reservationId,
-            @PathVariable Long userId,
             @RequestBody ReservationRequest reservationRequest) {
         try {
-            Reservation updatedReservation = reservationService.updateReservation(reservationId, userId, reservationRequest);
-            return ResponseEntity.ok(updatedReservation);
+            reservationService.updateReservation(reservationId, authHeader, reservationRequest);
+            return ResponseEntity.ok("Reservation updated successfully");
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/{reservationId}/delete/{userId}")
-    public ResponseEntity<Void> deleteReservation(@PathVariable Long reservationId, @PathVariable Long userId) {
+    @DeleteMapping("/{reservationId}")
+    public ResponseEntity<String> deleteReservation(
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authHeader,
+            @PathVariable Long reservationId) {
         try {
-            reservationService.deleteReservation(reservationId, userId);
-            return ResponseEntity.noContent().build();
+            reservationService.deleteReservation(reservationId, authHeader);
+            return ResponseEntity.ok("Reservation deleted successfully");
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }
+
 

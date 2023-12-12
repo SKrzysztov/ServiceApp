@@ -3,7 +3,7 @@ package com.example.project.user.api;
 import lombok.Getter;
 
 @Getter
-public class UserRequest {
+public class RegisterRequest {
     private String username;
     private String password;
 }

@@ -1,6 +1,8 @@
 package com.example.project.user.service;
 
+import com.example.project.user.api.RegisterRequest;
 import com.example.project.user.domain.User;
+import com.example.project.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,13 @@ import java.util.Optional;
 public class AuthenticationService {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
     public Optional<User> authenticate(String username, String password) {
-        Optional<User> user = userService.findByUsername(username);
+        Optional<User> user = findByUsername(username);
 
         if (user.isPresent() && user.get().getPassword().equals(password)) {
             return user;
@@ -38,7 +43,10 @@ public class AuthenticationService {
         return Optional.empty();
     }
 
-    public User createUser(String username, String password) {
-        return userService.createUser(username, password);
+    public User createUser(RegisterRequest registerRequest) {
+        User user = new User();
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(registerRequest.getPassword());
+        return userRepository.save(user);
     }
 }
