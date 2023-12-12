@@ -17,7 +17,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
     private PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
@@ -48,22 +47,7 @@ public class UserService {
             throw new RuntimeException("Użytkownik o podanym ID nie istnieje");
         }
     }
-
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
-    }
-
-    public boolean authenticateUser(String authorizationHeader) {
-        if (authorizationHeader != null && authorizationHeader.startsWith("Basic ")) {
-            String base64Credentials = authorizationHeader.substring("Basic ".length()).trim();
-            String credentials = new String(Base64.getDecoder().decode(base64Credentials));
-            String[] parts = credentials.split(":", 2);
-            String username = parts[0];
-            String password = parts[1];
-            Optional<User> user = userRepository.findByUsername(username);
-
-            return user.isPresent() && passwordEncoder.matches(password, user.get().getPassword());
-        }
-        return false;
     }
 }
