@@ -28,7 +28,7 @@ public class Reservation {
     @JsonFormat(pattern = "yy-MM-dd HH:mm")
     private LocalDateTime endDateTime;
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "users")
     private User user;
 
     @ManyToOne
