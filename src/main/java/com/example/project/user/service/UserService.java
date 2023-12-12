@@ -4,7 +4,6 @@ import com.example.project.user.api.UserRequest;
 import com.example.project.user.domain.User;
 import com.example.project.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -17,7 +16,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -30,7 +28,7 @@ public class UserService {
     public User createUser(UserRequest userRequest) {
         User userEntity = new User();
         userEntity.setUsername(userRequest.getUsername());
-        userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        userEntity.setPassword(userRequest.getPassword());
         return userRepository.save(userEntity);
     }
 
@@ -40,7 +38,7 @@ public class UserService {
         if (optionalUser.isPresent()) {
             User userEntity = optionalUser.get();
             userEntity.setUsername(userRequest.getUsername());
-            userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+            userEntity.setPassword(userRequest.getPassword());
 
             return userRepository.save(userEntity);
         } else {

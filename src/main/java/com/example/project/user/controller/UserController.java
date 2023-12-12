@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping("")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -26,7 +26,7 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("Użytkownik o podanym ID nie istnieje"));
     }
 
-    @PostMapping
+    @PostMapping("")
     public User createUser(@RequestBody UserRequest userRequest) {
         return userService.createUser(userRequest);
     }
