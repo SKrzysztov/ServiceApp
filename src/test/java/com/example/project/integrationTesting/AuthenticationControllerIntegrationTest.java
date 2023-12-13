@@ -34,7 +34,7 @@ public class AuthenticationControllerIntegrationTest {
         registerRequest.setUsername("newUser");
         registerRequest.setPassword("newPassword");
 
-        ResultActions result = mockMvc.perform(post("/register")
+        ResultActions result = mockMvc.perform(post("http://localhost:8080/api/auth/register")
                 .content(asJsonString(registerRequest))
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -54,7 +54,7 @@ public class AuthenticationControllerIntegrationTest {
         RegisterRequest registerRequest = new RegisterRequest();
         registerRequest.setUsername("existingUser");
         registerRequest.setPassword("newPassword");
-        ResultActions result = mockMvc.perform(post("/register")
+        ResultActions result = mockMvc.perform(post("http://localhost:8080/api/auth/register")
                 .content(asJsonString(registerRequest))
                 .contentType(MediaType.APPLICATION_JSON));
         result.andExpect(status().isBadRequest())
