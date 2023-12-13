@@ -8,7 +8,6 @@ import lombok.Setter;
 public class CustomServiceRequest {
     private String serviceName;
     private Long durationInMinutes;
-
     public void setDurationInMinutes(Long durationInMinutes) {
         this.durationInMinutes = durationInMinutes;
     }

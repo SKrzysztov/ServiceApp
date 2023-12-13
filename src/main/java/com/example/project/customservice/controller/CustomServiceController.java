@@ -25,7 +25,7 @@ public class CustomServiceController {
             @RequestBody CustomServiceRequest serviceRequest) {
         try {
             CustomService newService = customServiceService.createService(authHeader, serviceRequest);
-            return ResponseEntity.ok("Se    rvice created with ID: " + newService.getId());
+            return ResponseEntity.ok("Service created with ID: " + newService.getId());
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
