@@ -38,32 +38,25 @@ public class AuthenticationControllerIntegrationTest {
                 .content(asJsonString(registerRequest))
                 .contentType(MediaType.APPLICATION_JSON));
 
-        // Sprawdź, czy status odpowiedzi to 200 OK
         result.andExpect(status().isOk())
                 .andExpect(content().string(containsString("Registration successful")));
 
-        // Dodatkowe sprawdzenie można dodać, aby zweryfikować zapis w bazie danych
         User newUser = userRepository.findByUsername("newUser").orElse(null);
         assertThat(newUser).isNotNull();
     }
 
     @Test
     public void whenRegisterExistingUser_thenStatus400() throws Exception {
-        // Dodaj użytkownika do bazy danych
         User existingUser = new User();
         existingUser.setUsername("existingUser");
         existingUser.setPassword("existingPassword");
         userRepository.save(existingUser);
-
         RegisterRequest registerRequest = new RegisterRequest();
         registerRequest.setUsername("existingUser");
         registerRequest.setPassword("newPassword");
-
         ResultActions result = mockMvc.perform(post("/register")
                 .content(asJsonString(registerRequest))
                 .contentType(MediaType.APPLICATION_JSON));
-
-        // Sprawdź, czy status odpowiedzi to 400 Bad Request
         result.andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("User with this username already exists")));
     }
